@@ -99,7 +99,18 @@ Combines:
 
 The result also reports matched skills and missing required skills.
 
-### 6. End-to-End Screening
+### 6. Evidence-Based GenAI Explanation
+
+`app/explainer.py`
+
+- uses a local Ollama model when available
+- sends only measurable matching evidence to the model
+- instructs the model not to invent qualifications or make a hiring decision
+- provides a deterministic fallback when Ollama is unavailable
+
+Default local model: `llama3.2`.
+
+### 7. End-to-End Screening
 
 `app/screening_pipeline.py`
 
@@ -110,6 +121,27 @@ The pipeline accepts:
 - optional candidate experience in years
 
 It returns a JSON-compatible report containing structured requirements and match results.
+
+## Aesthetic Web Interface
+
+`streamlit_app.py` provides a recruiter-style dashboard with:
+
+- PDF/DOCX resume upload
+- job-description input
+- overall match score
+- skill, semantic and experience metrics
+- matched and missing skill evidence
+- evidence-grounded explanation
+- extracted requirements viewer
+- JSON report download
+
+Run it with:
+
+```bash
+streamlit run streamlit_app.py
+```
+
+For the GenAI explanation, install and run Ollama locally and make sure the configured model is available. If Ollama is unavailable, HireMind automatically uses its deterministic evidence summary.
 
 ## Run the Project
 
@@ -213,9 +245,9 @@ HireMind-AI/
 - [x] Hybrid matching
 - [x] End-to-end screening pipeline
 - [ ] Better skill/entity extraction
-- [ ] Evidence-based GenAI explanation
+- [x] Evidence-based GenAI explanation
 - [ ] FastAPI backend
-- [ ] Streamlit recruiter dashboard
+- [x] Streamlit recruiter dashboard
 - [ ] End-to-end integration tests
 - [ ] Docker / deployment
 - [ ] CI/CD
